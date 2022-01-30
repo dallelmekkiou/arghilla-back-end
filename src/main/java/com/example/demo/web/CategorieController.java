@@ -17,29 +17,26 @@ public class CategorieController {
 	@Autowired
 	private CategorieRepository catRepo;
 	
-	//////////////**Ajouter Categorie**********************//////////////
+	//Ajouter Categorie
 	@RequestMapping
 	(value="/addCategorie", method=RequestMethod.POST)
 	public Categorie addCategorie(@RequestBody Categorie cat) { 
 		return catRepo.save(cat); }
 	
 	
-	//////////////////************Get un Categorie by id**************///////////////
+	//Get un Categorie by id
 	 @RequestMapping
 	 (value="/getCategorie/{id}", method= RequestMethod.GET) 
 	 public Categorie getCategorie(@PathVariable Long id){ 
 		 return	 catRepo.findById(id).orElse(null); }
 	 
-	 //////////////////////////////*****getCategories All***********************////////////////////
-	 
-	 
+	 //getCategories All
 	 @RequestMapping
 	 (value="/getCategorie", method= RequestMethod.GET) 
 	 public List<Categorie> getCategorie(){ 
 	 return catRepo.findAll(); }
 	
-	 //////////////////////////////*****editCategorie ***********************//////////////////////
-	 
+	 //editCategorie  
 	 @RequestMapping
 	 (value="/editCategorie/{id}", method=RequestMethod.PUT)
 	 public Categorie editCategorie(@PathVariable Long id, @RequestBody Categorie cat) { 
@@ -47,9 +44,7 @@ public class CategorieController {
 		 return catRepo.save(cat); }else { return cat; } }
 	 
 	 
-//////////////////////////////////////////////Supprimer categorie////////////////////////
-	 
-	 
+     //Supprimer categorie
 	 @RequestMapping("/deleteCategorie/{id}")
 	 public String deleteCategorie (@PathVariable(value="id") Long id) { 
 	 catRepo.deleteById(id); 

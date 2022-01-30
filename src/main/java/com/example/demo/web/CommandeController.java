@@ -24,54 +24,43 @@ public class CommandeController {
 	@Autowired
 	private ClientRepository cliRepo;
 	
-//////////////**Ajouter Commande**********************//////////////
+    //Ajouter Commande	
+	@RequestMapping
+	(value="/addCommande/{id}", method=RequestMethod.POST)
+	public Commande addCommande(@RequestBody Commande com ,@PathVariable Long id) { 
+		
+		 if(cliRepo.findById(id).isPresent()) {
+			 Client c = new Client();
+			 c= cliRepo.findById(id).get();
+			 com.setClient(c);		 
+	 }return   comRepo.save(com); 	 
+		 }
 	
-@RequestMapping
-(value="/addCommande/{id}", method=RequestMethod.POST)
-public Commande addCommande(@RequestBody Commande com ,@PathVariable Long id) { 
+	//Get commande by id
+	@RequestMapping
+	(value="/getCommande/{id}", method= RequestMethod.GET) 
+	public Commande getCommande(@PathVariable Long id){ 
+		 return	comRepo.findById(id).orElse(null); }
 	
-	 if(cliRepo.findById(id).isPresent()) {
-		 Client c = new Client();
-		 c= cliRepo.findById(id).get();
-		 com.setClient(c);
-		 
-	 }return   comRepo.save(com); 
-		 
-	 }
+	//Get All commandes
+	@RequestMapping
+	(value="/getCommande", method= RequestMethod.GET) 
+	public List<Commande> getCommande(){ return comRepo.findAll(); }
 
-//////////////////************Get commande by id**************///////////////
-@RequestMapping
-(value="/getCommande/{id}", method= RequestMethod.GET) 
-public Commande getCommande(@PathVariable Long id){ 
-	 return	 comRepo.findById(id).orElse(null); }
+	//EditCategorie 
+	@RequestMapping
+	(value="/editCommande/{id}", method=RequestMethod.PUT)
+	public Commande editCommande(@PathVariable Long id, @RequestBody Commande com) { 
+		 if(comRepo.findById(id).isPresent()) { com.setId(id);
+		 return comRepo.save(com); }else { return com; } }
 
-///////////////////////////********get All commandes **************///////////
-
-@RequestMapping
-(value="/getCommande", method= RequestMethod.GET) 
-public List<Commande> getCommande(){ return comRepo.findAll(); }
-
-
-
-//////////////////////////////*****editCategorie ***********************//////////////////////
-
-@RequestMapping
-(value="/editCommande/{id}", method=RequestMethod.PUT)
-public Commande editCommande(@PathVariable Long id, @RequestBody Commande com) { 
-	 if(comRepo.findById(id).isPresent()) { com.setId(id);
-	 return comRepo.save(com); }else { return com; } }
-
-
-//////////////////////////////////////////////Supprimer commande////////////////////////
-
-
-@RequestMapping("/deleteCommande/{id}")
-
-public String deleteCommande (@PathVariable(value="commandeId") Long id) 
-{ comRepo.deleteById(id); return
-"Supprimer avec succès="+id;
-
-}
+	//Supprimer commande
+	@RequestMapping("/deleteCommande/{id}")
+	public String deleteCommande (@PathVariable(value="commandeId") Long id) 
+	{ comRepo.deleteById(id); return
+	"Supprimer avec succès="+id;
+	
+	}
 
 
 }
